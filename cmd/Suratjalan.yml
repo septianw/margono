@@ -1,0 +1,30 @@
+# version: 0.1.0
+# surat jalan
+domain: jayatamateknik.co.id  # for custom domain, will ignore *.online.or.id
+
+builds:
+  build1:  # build the apps, not node
+    type: [php | nodejs | go]
+    cmd:
+      - go build
+
+apps:
+  app1:
+    name: mainapp   # used for hostname
+    platform: [wordpress | wordpress46 | wordpress45 | wordpress43 | wordpress42 | wordpress39 | drupal | custom] # no custom for now
+    size: [small | medium | large]  # still not available yet
+    type: [php | php55 | php56 | nodejs | go] # still php only
+    storage:
+      - wp-content  # basepath on current code directory
+    predeploy:
+      - echo predeploy
+    deploy:
+      - echo deploy
+    postdeploy:
+      - echo postdeploy
+
+dbs:
+  db1:
+    engine: [mysql | postgre]         # only mysql for now
+    type: [dev | shared | dedicated ] # only available for shared default: shared
+    size: [small | medium | large]    # still not available yet default: none

@@ -1,0 +1,20 @@
+# version: 0.1.0
+# surat jalan
+
+apps:
+  app1:
+    platform: wordpress
+    type: php
+    storage:
+      - wp-content
+    deploy:
+      - echo "Hello world!"
+    postdeploy:
+      - echo "this is post deploy!"
+  app2:
+    platform: custom
+    type: php
+
+dbs:
+  db1:
+    engine: mysql

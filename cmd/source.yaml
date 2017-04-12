@@ -1,0 +1,36 @@
+version: '2'
+services:
+  web:
+    build: web
+    volumes:
+      - "/sites/tasmodelternet/space:/var/www/html/wp-content" # dari jalan
+    environment:				# dari tool
+      DBUSER: tasmodelternet	# dari tool
+      DBPASS: NKgg3xwjvdxwU7qv	# dari tool
+      DBHOST: 104.154.20.82		# dari tool
+      DBNAME: tasmodelternet	# dari tool
+    restart: always				# dari config
+    mem_limit: 128M				# dari config
+    memswap_limit: 1M			# dari config
+    cpu_shares: 64				# dari config
+    cpu_quota: 25000			# dari config
+  ssh:
+    build: ssh
+    ports:
+      - "2204:22"				# range dari config, port dari tool
+    volumes:
+      - "/sites/tasmodelternet/space:/home/tasmodelternet"		# dari jalan
+    mem_limit: 25M				# dari config
+    restart: always				# dari config
+  lb:
+    image: dockercloud/haproxy:1.4
+    restart: always				# dari config
+    links:
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - STATS_AUTH=asep:ganteng	# dari config
+    ports:
+      - 32788:80				# range dari config, port dari tool
+      - 32789:1936				# range dari config, port dari tool

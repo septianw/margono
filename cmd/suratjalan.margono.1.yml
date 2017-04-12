@@ -1,0 +1,30 @@
+# version: 0.1.0
+# surat jalan
+domain: jayatamateknik.co.id  # for custom domain, will ignore *.online.or.id
+
+builds
+  build1:  # build the apps, not node
+    type: php
+    cmd:
+      - go build
+
+apps:
+  app1:
+    name: mainapp   # used for hostname
+    platform: custom
+    size: small
+    type: php
+    storage:
+      - wp-content  # basepath on current code directory
+    predeploy:      # run on host machine before dockerfile run
+      - echo predeploy
+    deploy:         # run while dockerfile run
+      - echo deploy
+    postdeploy:     # run after guest machine run inside guest machine
+      - echo postdeploy
+
+dbs:
+  db1:
+    engine: mysql
+    type: shared
+    size: small
