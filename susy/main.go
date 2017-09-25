@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/septianw/margono/libs"
+	"bitbucket.org/araneaws/margono"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -32,6 +32,7 @@ func exist(path string) bool {
 	return true
 }
 
+// ArtefactPath Get full path of artefact
 func ArtefactPath() string {
 	cnf := libs.GetConfig()
 	loc := filepath.Join(cnf.Main.Artefact, "users")
@@ -39,6 +40,7 @@ func ArtefactPath() string {
 	return loc
 }
 
+// Push new account to database
 func Push(rec *libs.Account) error {
 
 	recj, err := json.Marshal(rec)
@@ -51,6 +53,7 @@ func Push(rec *libs.Account) error {
 	return err
 }
 
+// Pull account from database
 func Pull(name string) libs.Account {
 	var a libs.Account
 	//	var out interface{}
@@ -165,6 +168,28 @@ func main() {
 				fmt.Println("User deleted", a.Domain)
 				//				out, _ := json.MarshalIndent(a, "", "  ")
 				//				fmt.Println(string(out))
+
+				return nil
+			},
+		},
+		{
+			Name:    "deleteall",
+			Aliases: []string{"da", "dd"},
+			Usage:   "susy da",
+			Action: func(c *cli.Context) error {
+				files, err := ioutil.ReadDir(ArtefactPath())
+				check(err)
+				for _, file := range files {
+
+					a := libs.New(file.Name())
+					a.RemoveUserOs()
+					a.RemoveUserDb()
+					err := os.Remove(filepath.Join(ArtefactPath(), a.Os.Name))
+					check(err)
+					fmt.Println("User deleted", a.Domain)
+					//				out, _ := json.MarshalIndent(a, "", "  ")
+					//				fmt.Println(string(out))
+				}
 
 				return nil
 			},

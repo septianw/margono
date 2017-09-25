@@ -25,8 +25,8 @@ import (
 	//	"github.com/docker/libcompose/project"
 	//	"github.com/docker/libcompose/project/options"
 
+	"bitbucket.org/araneaws/margono"
 	"github.com/dustinkirkland/golang-petname"
-	"github.com/septianw/margono/libs"
 	"gopkg.in/urfave/cli.v1"
 	"gopkg.in/yaml.v2"
 )
@@ -143,7 +143,7 @@ func GenApp(app App, acc *libs.Account) Web {
 	web = Web{
 		Restart:       "always",
 		Mem_limit:     "128M",
-		Memswap_limit: "1M",
+		Memswap_limit: "128M",
 		Cpu_shares:    64,
 		Cpu_quota:     25000,
 	}

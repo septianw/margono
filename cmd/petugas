@@ -1,0 +1,37 @@
+#!/bin/bash
+
+cd $PWD
+  dom=$(margono r .suratjalan.yml)
+
+echo $PWD
+
+webport=$(echo $dom | cut -d" " -f1 | cut -d"=" -f2)
+haport=$(echo $dom | cut -d" " -f2 | cut -d"=" -f2)
+domain=$(echo $dom | cut -d" " -f3 | cut -d"=" -f2)
+name=$(echo $dom | cut -d" " -f4 | cut -d"=" -f2)
+
+home=$(cat /etc/passwd | grep $name | cut -d":" -f6)
+
+echo $webport
+echo $haport
+echo $domain
+echo $name
+
+mkdir /etc/nginx/sites/$name
+
+cat /etc/nginx/snippets/sites.conf | sed 's/sitename/'$name'/g' > /etc/nginx/sites/$name/$name.conf
+ln -s /etc/nginx/sites/$name/$name.conf /etc/nginx/sites-enabled/$name.conf
+
+echo "server_name $domain www.$domain;" > /etc/nginx/sites/$name/domain.conf
+echo "listen 80;" > /etc/nginx/sites/$name/ports.conf
+echo "server 127.0.0.1:$webport;" > /etc/nginx/sites/$name/server.conf
+echo "server 127.0.0.1:$haport;" > /etc/nginx/sites/$name/serverha.conf
+
+service nginx restart
+
+if [ ! -f /var/run/nginx.pid ]; then
+  rm /etc/nginx/sites-enabled/$name.conf
+  service nginx restart
+fi
+
+cd $home && docker-compose up -d --force-recreate --build --remove-orphans

@@ -14,7 +14,7 @@
 	  - [ ] Generate docker-compose.yml file	// need more parameter from user
 	  - [x] Get port from range
 */
-package libs
+package margono
 
 import (
 	//	"flag"
