@@ -93,6 +93,11 @@ func Pull(name string) libs.Account {
 	return a
 }
 
+// down the service
+func down(rec *libs.Account) error {
+
+}
+
 func main() {
 	susy := cli.NewApp()
 	susy.Name = "susy"
